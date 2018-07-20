@@ -5,7 +5,38 @@ class BinarySearchTree:
     self.right = None
 
   def depth_first_for_each(self, cb):
-    pass    
+    done = False
+    stack = []
+    stack_map = {}
+    output = []
+    current_node = self
+    parent_node = None
+    
+
+    while not done:
+      # check if we have already seen this node
+      if not stack_map.get(current_node):
+        stack.append(current_node)
+        stack_map[ current_node ] = current_node
+        cb(current_node.value)
+
+      # if left exists and has not been hashed
+      if current_node.left and not stack_map.get(current_node.left):
+        current_node = current_node.left
+        continue
+      # if right exists and has not been hashed
+      elif current_node.right and not stack_map.get(current_node.right):
+        current_node = current_node.right
+        continue
+      else:
+        del stack[-1] # remove last index of stack
+
+        # break loop condition
+        if len(stack) == 0:
+          break
+          
+        # after removing the current node from our stack we can now traverse back up to our parent node
+        current_node = stack[-1]
 
   def breadth_first_for_each(self, cb):
     pass
