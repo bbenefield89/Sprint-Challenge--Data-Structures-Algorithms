@@ -39,7 +39,36 @@ class BinarySearchTree:
         current_node = stack[-1]
 
   def breadth_first_for_each(self, cb):
-    pass
+    done = False
+    queue = []
+    queue_map = {}
+    current_node = self
+
+    queue.append(current_node)
+    queue_map[ current_node ] = current_node
+    cb(current_node.value)
+
+    while not done:
+      if current_node.left:
+        if not queue_map.get(current_node.left):
+          queue.append(current_node.left)
+          queue_map[ current_node.left ] = current_node.left
+
+          cb(current_node.left.value)
+          
+      if current_node.right:
+        if not queue_map.get(current_node.right):
+          queue.append(current_node.right)
+          queue_map[ current_node.right ] = current_node.right
+
+          cb(current_node.right.value)
+      
+      del queue[0]
+
+      if len(queue) == 0:
+        break
+
+      current_node = queue[0]
 
   def insert(self, value):
     new_tree = BinarySearchTree(value)
